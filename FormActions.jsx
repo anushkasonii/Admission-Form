@@ -5,12 +5,12 @@ import EditIcon from '@mui/icons-material/Edit';
 
 export default function FormActions({ onEdit }) {
   const handleCopyLink = () => {
-    // Implement copy link functionality
+    
     console.log('Copy link clicked');
   };
 
   const handleDownloadQR = () => {
-    // Implement QR code download
+
     console.log('Download QR clicked');
   };
 
@@ -26,7 +26,7 @@ export default function FormActions({ onEdit }) {
         <Button 
           variant="outlined"
           onClick={handleCopyLink}
-          sx={{ minWidth: '64px', height: '64px' }}
+          sx={{ minWidth: '50px', height: '50px' }}
         >
           <ContentCopyIcon />
         </Button>
@@ -39,7 +39,7 @@ export default function FormActions({ onEdit }) {
         <Button 
           variant="outlined"
           onClick={handleDownloadQR}
-          sx={{ minWidth: '64px', height: '64px' }}
+          sx={{ minWidth: '50px', height: '50px' }}
         >
           <QrCodeIcon />
         </Button>
@@ -52,7 +52,7 @@ export default function FormActions({ onEdit }) {
         variant="outlined"
         onClick={onEdit}
         startIcon={<EditIcon />}
-        sx={{ height: '64px' }}
+        sx={{ height: '50px' }}
       >
         Edit
       </Button>

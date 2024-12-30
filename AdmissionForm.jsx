@@ -97,13 +97,13 @@ export default function AdmissionForm() {
           <Checkbox checked={true} color="primary" />
           <TextField
             fullWidth
-            label="Father's Name"
+            label="Parent Name"
             variant="outlined"
             disabled={isSubmitted && !isEditing}
           />
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, my: 2 }}>
+        {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, my: 2 }}>
           <Divider sx={{ flex: 1 }} />
           <Typography color="textSecondary">OR</Typography>
           <Divider sx={{ flex: 1 }} />
@@ -117,7 +117,7 @@ export default function AdmissionForm() {
             variant="outlined"
             disabled={isSubmitted && !isEditing}
           />
-        </Box>
+        </Box> */}
 
         {additionalFields.map((field) => (
           <Box key={field.id} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
