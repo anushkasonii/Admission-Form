@@ -19,6 +19,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useState } from "react";
+import StudentFollowUp from "./StudentFollowUp";
 
 const stats = [
   { label: "Total Enquiries", value: "50" },
@@ -76,7 +78,13 @@ const tableData = [
   ];
   
 
-export default function AdmissionDetails() {
+  export default function AdmissionDetails() {
+    const [selectedStudent, setSelectedStudent] = useState(null);
+  
+    if (selectedStudent) {
+      return <StudentFollowUp student={selectedStudent} onBack={() => setSelectedStudent(null)} />;
+    }
+  
   return (
     <Box sx={{ p: 3, position: "relative" }}>
       {/* Button at Top-Right Corner */}
@@ -219,9 +227,20 @@ export default function AdmissionDetails() {
                 <TableCell padding="checkbox">
                   <Checkbox />
                 </TableCell>
-                <TableCell sx={{ fontSize: "16px", textAlign: 'center' }}>
-                  {row.studentName}
-                </TableCell>
+                <TableCell 
+              sx={{ 
+                fontSize: "16px", 
+                textAlign: 'center',
+                cursor: 'pointer',
+                '&:hover': {
+                  color: '#1976d2',
+                  textDecoration: 'underline'
+                }
+              }}
+              onClick={() => setSelectedStudent(row)}
+            >
+              {row.studentName}
+            </TableCell>
                 <TableCell sx={{ fontSize: "16px", textAlign: 'center' }}>{row.class}</TableCell>
                 <TableCell sx={{ fontSize: "16px", textAlign: 'center' }}>
                   {row.parentName}
