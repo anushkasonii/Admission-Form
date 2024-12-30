@@ -1,15 +1,19 @@
 import { Tabs, Tab, Box } from '@mui/material';
 import { useState } from 'react';
 
-export default function Navigation() {
+export default function Navigation({ onTabChange }) {
   const [value, setValue] = useState(0);
+
+  const handleChange = (e, newValue) => {
+    setValue(newValue);
+    onTabChange(newValue);
+  };
 
   return (
     <Box>
-    
       <Tabs
         value={value}
-        onChange={(e, newValue) => setValue(newValue)}
+        onChange={handleChange}
         sx={{
           '& .MuiTab-root': {
             textTransform: 'none', 
@@ -26,8 +30,8 @@ export default function Navigation() {
           style: { display: 'none' }, 
         }}
       >
-        <Tab label="Dashboard" />
         <Tab label="Admission Form" />
+        <Tab label="Admission Details" />
       </Tabs>
       <Box
         sx={{
