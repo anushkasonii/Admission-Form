@@ -10,8 +10,15 @@ import {
   Grid,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useState } from 'react';
+import AddFollowUpForm from './AddFollowUpForm';
 
 export default function StudentFollowUp({ student, onBack }) {
+    const [showFollowUpForm, setShowFollowUpForm] = useState(false);
+
+    if (showFollowUpForm) {
+      return <AddFollowUpForm student={student} onClose={() => setShowFollowUpForm(false)} />;
+    }
   return (
     <Box sx={{ p: 3 }}>
       {/* Header */}
@@ -75,20 +82,25 @@ export default function StudentFollowUp({ student, onBack }) {
       </Box>
 
       {/* Student Info */}
-      <Box sx={{ display: "flex", gap: 3, mb: 4 }}>
-        <TextField
-          label="Parent Name"
-          value={student.parentName}
-          fullWidth
-          InputProps={{ readOnly: true }}
-        />
-        <TextField
-          label="Phone Number"
-          value={student.phoneNumber}
-          fullWidth
-          InputProps={{ readOnly: true }}
-        />
-      </Box>
+      <Box sx={{ display: "flex", gap: 10, mb: 4 }}>
+  <Box sx={{ flex: 1 }}>
+    <Typography variant="subtitle1" color="textSecondary" sx={{fontWeight:'bold', color: '#7d5261'}}>
+      Parent Name
+    </Typography>
+    <Typography variant="body1" sx={{ border: "1px solid #e0e0e0", padding: "8px", borderRadius: "4px", fontSize:'16px' }}>
+      {student.parentName}
+    </Typography>
+  </Box>
+  <Box sx={{ flex: 1, mr: 100 }}>
+    <Typography variant="subtitle1" color="textSecondary"sx={{fontWeight:'bold', color: '#7d5261'}}>
+      Phone Number
+    </Typography>
+    <Typography variant="body1" sx={{ border: "1px solid #e0e0e0", padding: "8px", borderRadius: "4px", fontSize:'16px' }}>
+      {student.phoneNumber}
+    </Typography>
+  </Box>
+</Box>
+
 
       {/* Follow Up Section */}
       <Box sx={{ mb: 4 }}>
@@ -126,6 +138,7 @@ export default function StudentFollowUp({ student, onBack }) {
                 <Typography sx={{ mb: 2 , fontSize:'15.7px'}}>{followUp.message}</Typography>
                 <Button
                   variant="outlined"
+                  onClick={() => setShowFollowUpForm(true)}
                   sx={{
                     borderRadius: "20px",
                     borderColor: "#1FB892",

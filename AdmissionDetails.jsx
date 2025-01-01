@@ -88,7 +88,7 @@ const tableData = [
   return (
     <Box sx={{ p: 3, position: "relative" }}>
       {/* Button at Top-Right Corner */}
-      <Box
+      {/* <Box
         sx={{
           position: "absolute",
           top: "1px",
@@ -101,7 +101,7 @@ const tableData = [
             borderRadius: "20px",
             borderColor: "#1FB892",
             color: "#1FB892",
-            fontSize: "18px",
+            fontSize: "17px",
             backgroundColor: "white",
             "&:hover": {
               borderColor: "#1FB892",
@@ -112,10 +112,10 @@ const tableData = [
         >
           Create Enquiry
         </Button>
-      </Box>
+      </Box> */}
     
       {/* Stats Cards */}
-      <Box sx={{ display: "flex", gap: 2, mb: 4, mt:4 }}>
+      <Box sx={{ display: "flex", gap: 2, mb: 5, mt:4 }}>
         {stats.map((stat, index) => (
           <Paper
             key={index}

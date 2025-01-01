@@ -33,8 +33,8 @@ export default function AdmissionForm() {
   };
 
   return (
-    <Box component="form" sx={{ maxWidth: 500, mx: 'auto', ml:'10px' }}>
-    <Typography variant="h6" sx={{ mb: 2 , color:'#3f2189',}}>Required Field</Typography>
+    <Box component="form" sx={{ maxWidth: 500, mx: 'auto', ml:'10px', mt:5 }}>
+    <Typography variant="h6" sx={{ mb: 3 , color:'#3f2189',}}>Required Field</Typography>
       
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
