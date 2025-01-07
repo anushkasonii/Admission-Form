@@ -42,12 +42,11 @@ export default function StudentFollowUp({ student, onBack }) {
   }
 
   const cellStyle = {
-    borderRight: '1px solid #e0e0e0',
     '&:last-child': {
       borderRight: 'none'
     }
   };
-
+  
   return (
     <Box sx={{ p: 3 }}>
       {/* Header */}

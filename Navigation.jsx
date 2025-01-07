@@ -1,21 +1,14 @@
 import { Tabs, Tab, Box, Button } from '@mui/material';
-import { useState } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 
-export default function Navigation({ onTabChange }) {
-  const [value, setValue] = useState(0);
-  const [showCreateEnquiry, setShowCreateEnquiry] = useState(false);
-
-  const handleChange = (e, newValue) => {
-    setValue(newValue);
-    onTabChange(newValue);
-    setShowCreateEnquiry(newValue === 1); // Show button only on Admission Details
-  };
+export default function Navigation() {
+  const location = useLocation();
+  const showCreateEnquiry = location.pathname === "/"; // Show button only on Admission Details
 
   return (
     <Box sx={{ position: "relative" }}>
       <Tabs
-        value={value}
-        onChange={handleChange}
+        value={location.pathname}
         sx={{
           '& .MuiTab-root': { textTransform: 'none', fontSize: '22px' },
           '& .Mui-selected': { color: 'black' },
@@ -25,8 +18,18 @@ export default function Navigation({ onTabChange }) {
           style: { display: 'none' },
         }}
       >
-        <Tab label="Admission Form" />
-        <Tab label="Admission Details" />
+        <Tab
+          label="Admission Form"
+          value="/admission-form"
+          component={Link}
+          to="/admission-form"
+        />
+        <Tab
+          label="Admission Details"
+          value="/"
+          component={Link}
+          to="/"
+        />
       </Tabs>
       {showCreateEnquiry && (
         <Box

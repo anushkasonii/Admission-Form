@@ -4,9 +4,14 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function FormActions({ onEdit }) {
-  const handleCopyLink = () => {
-    
-    console.log('Copy link clicked');
+  const handleCopyLink = async () => {
+    const formUrl = `${window.location.origin}/form-preview`;
+    try {
+      await navigator.clipboard.writeText(formUrl);
+      alert('Link copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy link:', err);
+    }
   };
 
   const handleDownloadQR = () => {
