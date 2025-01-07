@@ -81,39 +81,38 @@ const tableData = [
   export default function AdmissionDetails() {
     const [selectedStudent, setSelectedStudent] = useState(null);
   
+
+    // Calculate stats dynamically from tableData
+  const stats = [
+    { 
+      label: "Total Enquiries", 
+      value: tableData.length.toString() 
+    },
+    { 
+      label: "School Toured", 
+      value: tableData.filter(item => item.status === "School Toured").length.toString() 
+    },
+    { 
+      label: "Follow up", 
+      value: tableData.filter(item => item.status === "Follow up").length.toString() 
+    },
+    { 
+      label: "Joined", 
+      value: tableData.filter(item => item.status === "Joined").length.toString() 
+    },
+    { 
+      label: "Dropped", 
+      value: tableData.filter(item => item.status === "Dropped").length.toString() 
+    },
+  ];
+
     if (selectedStudent) {
       return <StudentFollowUp student={selectedStudent} onBack={() => setSelectedStudent(null)} />;
     }
   
   return (
     <Box sx={{ p: 3, position: "relative" }}>
-      {/* Button at Top-Right Corner */}
-      {/* <Box
-        sx={{
-          position: "absolute",
-          top: "1px",
-          right: "20px",
-        }}
-      >
-        <Button
-          variant="outlined"
-          sx={{
-            borderRadius: "20px",
-            borderColor: "#1FB892",
-            color: "#1FB892",
-            fontSize: "17px",
-            backgroundColor: "white",
-            "&:hover": {
-              borderColor: "#1FB892",
-              backgroundColor: "#1FB892",
-              color: "white",
-            },
-          }}
-        >
-          Create Enquiry
-        </Button>
-      </Box> */}
-    
+      
       {/* Stats Cards */}
       <Box sx={{ display: "flex", gap: 2, mb: 5, mt:4 }}>
         {stats.map((stat, index) => (
