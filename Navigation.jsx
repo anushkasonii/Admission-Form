@@ -1,37 +1,44 @@
 import { Tabs, Tab, Box, Button } from '@mui/material';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 export default function Navigation() {
   const location = useLocation();
+  const navigate = useNavigate(); // React Router's hook to programmatically navigate
   const showCreateEnquiry = location.pathname === "/"; // Show button only on Admission Details
+
+  // List of paths where headers should be hidden
+  const hideTabsPaths = ["/form-preview", "/qr-code"];
+  const showTabs = !hideTabsPaths.includes(location.pathname);
 
   return (
     <Box sx={{ position: "relative" }}>
-      <Tabs
-        value={location.pathname}
-        sx={{
-          '& .MuiTab-root': { textTransform: 'none', fontSize: '22px' },
-          '& .Mui-selected': { color: 'black' },
-          '& .MuiTab-root:not(.Mui-selected)': { color: 'grey' },
-        }}
-        TabIndicatorProps={{
-          style: { display: 'none' },
-        }}
-      >
-        <Tab
-          label="Admission Form"
-          value="/admission-form"
-          component={Link}
-          to="/admission-form"
-        />
-        <Tab
-          label="Admission Details"
-          value="/"
-          component={Link}
-          to="/"
-        />
-      </Tabs>
-      {showCreateEnquiry && (
+      {showTabs && (
+        <Tabs
+          value={location.pathname}
+          sx={{
+            '& .MuiTab-root': { textTransform: 'none', fontSize: '22px' },
+            '& .Mui-selected': { color: 'black' },
+            '& .MuiTab-root:not(.Mui-selected)': { color: 'grey' },
+          }}
+          TabIndicatorProps={{
+            style: { display: 'none' },
+          }}
+        >
+          <Tab
+            label="Admission Form"
+            value="/admission-form"
+            component={Link}
+            to="/admission-form"
+          />
+          <Tab
+            label="Admission Details"
+            value="/"
+            component={Link}
+            to="/"
+          />
+        </Tabs>
+      )}
+      {showCreateEnquiry && showTabs && (
         <Box
           sx={{
             position: "absolute",
@@ -53,22 +60,25 @@ export default function Navigation() {
                 color: "white",
               },
             }}
+            onClick={() => window.open('/form-preview', '_blank')} // Open FormPreview in a new tab
           >
             Create Enquiry
           </Button>
         </Box>
       )}
-      <Box
-        sx={{
-          borderBottom: 1,
-          borderColor: 'divider',
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: '100%',
-        }}
-      />
+      {showTabs && (
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: 'divider',
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: '100%',
+          }}
+        />
+      )}
     </Box>
   );
 }

@@ -14,9 +14,8 @@ export default function FormActions({ onEdit }) {
     }
   };
 
-  const handleDownloadQR = () => {
-
-    console.log('Download QR clicked');
+  const handleQRDownload = () => {
+    window.open(`${window.location.origin}/qr-code`, '_blank');
   };
 
   return (
@@ -43,7 +42,7 @@ export default function FormActions({ onEdit }) {
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Button 
           variant="outlined"
-          onClick={handleDownloadQR}
+          onClick={handleQRDownload}
           sx={{ minWidth: '50px', height: '50px' }}
         >
           <QrCodeIcon />

@@ -43,7 +43,7 @@ export default function AdmissionForm() {
             fullWidth
             label="Student Name"
             variant="outlined"
-            disabled={isSubmitted && !isEditing}
+            disabled
           />
         </Box>
 
@@ -54,10 +54,11 @@ export default function AdmissionForm() {
             fullWidth
             label="Select Class "
             variant="outlined"
-            disabled={isSubmitted && !isEditing}
+            disabled
           >
             <MenuItem value="class1">Class 1</MenuItem>
             <MenuItem value="class2">Class 2</MenuItem>
+            
           </TextField>
           <Button 
             variant="outlined" 
@@ -89,7 +90,7 @@ export default function AdmissionForm() {
             fullWidth
             label="Phone Number"
             variant="outlined"
-            disabled={isSubmitted && !isEditing}
+            disabled
           />
         </Box>
 
@@ -99,7 +100,7 @@ export default function AdmissionForm() {
             fullWidth
             label="Parent Name"
             variant="outlined"
-            disabled={isSubmitted && !isEditing}
+            disabled
           />
         </Box>
 

@@ -2,97 +2,102 @@ import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Paper }
 
 export default function FormPreview() {
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        height: '100vh',
+        bgcolor: '#f9f9f9',
+      }}
+    >
       {/* Left Side - Logo and School Info */}
       <Box
         sx={{
           width: '50%',
-          bgcolor: '#f5f5f5',
+          bgcolor: '#eaf4fc',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          p: 4
+          p: 4,
+          borderRight: '1px solid #ccc',
         }}
       >
-        <Box
-          component="img"
-          src="/placeholder-logo.png"
-          alt="School Logo"
-          sx={{
-            width: 200,
-            height: 200,
-            mb: 2
-          }}
-        />
-        <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
+      
+        <Typography variant="h5" sx={{  mb: 1 }}>
           School Logo
         </Typography>
-        <Typography variant="h6">
-          Gurgaon, Haryana
-        </Typography>
+        
       </Box>
 
       {/* Right Side - Form */}
-      <Box sx={{ width: '50%', p: 4 }}>
-        <Typography variant="h5" sx={{ mb: 4, fontWeight: 'bold' }}>
-          Admission Form
+      <Box
+        sx={{
+          width: '50%',
+          p: 5,
+          bgcolor: 'white',
+          boxShadow: 2,
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ mb: 2,mt:2, fontWeight: 'bold', color: '#3f2189', textAlign: 'center' , fontSize:'25px'}}
+        >
+          Admission Form Preview
         </Typography>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <TextField
-            fullWidth
-            label="Student Name"
-            variant="outlined"
-          />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 , p:3}}>
+          {/* Student Name */}
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            {/* <Checkbox  color="primary" /> */}
+            <TextField fullWidth label="Student Name" variant="outlined" />
+          </Box>
 
-          <TextField
-            fullWidth
-            select
-            label="Select Class - Admission"
-            variant="outlined"
-          />
+          {/* Class */}
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            {/* <Checkbox  color="primary" /> */}
+            <TextField fullWidth select label="Select Class - Admission" variant="outlined" />
+          </Box>
 
-          <TextField
-            fullWidth
-            label="Phone Number"
-            variant="outlined"
-          />
+          {/* Phone Number */}
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            {/* <Checkbox  color="primary" /> */}
+            <TextField fullWidth label="Phone Number" variant="outlined" />
+          </Box>
 
-          <TextField
-            fullWidth
-            label="Father Name"
-            variant="outlined"
-          />
+          {/* Father Name */}
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            {/* <Checkbox  color="primary" /> */}
+            <TextField fullWidth label="Father Name" variant="outlined" />
+          </Box>
 
-          <Typography align="center" sx={{ my: 2 }}>
-            OR
-          </Typography>
+          {/* Mother Name */}
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            {/* <Checkbox  color="primary" /> */}
+            <TextField fullWidth label="Mother Name" variant="outlined" />
+          </Box>
 
-          <TextField
-            fullWidth
-            label="Mother Name"
-            variant="outlined"
-          />
-
+          {/* Consent Checkbox */}
           <FormControlLabel
-            control={<Checkbox />}
-            label="I authorize School Name to contact me with updates via email / SMS / Whatsapp/ Call"
+            control={<Checkbox  color="primary" sx={{ml:0}} />}
+            label="I authorize School Name to contact me with updates via email / SMS / WhatsApp / Call"
+            sx={{ color: '#4c4c4c', fontSize: '14px' }}
           />
 
+          {/* Submit Button */}
           <Button
             variant="outlined"
             fullWidth
             sx={{
-              borderRadius: "18px",
-              borderColor: "#1FB892",
-              color: "#1FB892",
-              fontSize: "16px",
+              borderRadius: '20px',
+              borderColor: '#1FB892',
+              color: '#1FB892',
+              fontSize: '16px',
               py: 1.5,
-              "&:hover": {
-                borderColor: "#1FB892",
-                backgroundColor: "#1FB892",
-                color: "white",
+              mt: 2,
+              '&:hover': {
+                borderColor: '#1FB892',
+                backgroundColor: '#1FB892',
+                color: 'white',
               },
             }}
           >

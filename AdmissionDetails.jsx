@@ -12,7 +12,6 @@ import {
   TableHead,
   TableRow,
   Checkbox,
-  Button,
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -72,54 +71,101 @@ const tableData = [
 export default function AdmissionDetails() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [tableDataState, setTableDataState] = useState(tableData);
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   const stats = [
-    { 
-      label: "Total Enquiries", 
-      value: tableDataState.length.toString() 
+    {
+      label: "Total Enquiries",
+      value: tableData.length.toString(),
     },
-    { 
-      label: "School Toured", 
-      value: tableDataState.filter(item => item.status === "School Toured").length.toString() 
+    {
+      label: "School Toured",
+      value: tableData
+        .filter((item) => item.status === "School Toured")
+        .length.toString(),
     },
-    { 
-      label: "Follow up", 
-      value: tableDataState.filter(item => item.status === "Follow up").length.toString() 
+    {
+      label: "Follow up",
+      value: tableData
+        .filter((item) => item.status === "Follow up")
+        .length.toString(),
     },
-    { 
-      label: "Joined", 
-      value: tableDataState.filter(item => item.status === "Joined").length.toString() 
+    {
+      label: "Joined",
+      value: tableData
+        .filter((item) => item.status === "Joined")
+        .length.toString(),
     },
-    { 
-      label: "Dropped", 
-      value: tableDataState.filter(item => item.status === "Dropped").length.toString() 
+    {
+      label: "Dropped",
+      value: tableData
+        .filter((item) => item.status === "Dropped")
+        .length.toString(),
     },
   ];
 
+  const handleFilterClick = (label) => {
+    if (label === "Total Enquiries") {
+      setSelectedFilters([]);
+      setTableDataState(tableData);
+    } else {
+      setSelectedFilters((prev) => {
+        const newFilters = prev.includes(label)
+          ? prev.filter((f) => f !== label)
+          : [...prev, label];
+
+        if (newFilters.length === 0) {
+          setTableDataState(tableData);
+          return [];
+        }
+
+        const filtered = tableData.filter((item) =>
+          newFilters.includes(item.status)
+        );
+        setTableDataState(filtered);
+        return newFilters;
+      });
+    }
+  };
+
   const handleStatusChange = (id, newStatus) => {
-    setTableDataState(prevData =>
-      prevData.map(row =>
+    setTableDataState((prevData) =>
+      prevData.map((row) =>
         row.id === id ? { ...row, status: newStatus } : row
       )
     );
   };
 
   if (selectedStudent) {
-    return <StudentFollowUp student={selectedStudent} onBack={() => setSelectedStudent(null)} />;
+    return (
+      <StudentFollowUp
+        student={selectedStudent}
+        onBack={() => setSelectedStudent(null)}
+      />
+    );
   }
 
   return (
     <Box sx={{ p: 3, position: "relative" }}>
-      <Box sx={{ display: "flex", gap: 2, mb: 5, mt:4 }}>
+      <Box sx={{ display: "flex", gap: 2, mb: 5, mt: 4 }}>
         {stats.map((stat, index) => (
           <Paper
             key={index}
+            onClick={() => handleFilterClick(stat.label)}
             sx={{
               p: 2,
               flex: 1,
               textAlign: "center",
-              bgcolor: stat.label === "Dropped" ? "#f5f5f5" : "white",
+              bgcolor: selectedFilters.includes(stat.label)
+                ? "#e7def8"
+                : stat.label === "Dropped"
+                ? "#f5f5f5"
+                : "white",
               border: "1px solid #e7def8",
+              cursor: "pointer",
+              "&:hover": {
+                bgcolor: "#e7def8",
+              },
             }}
           >
             <Typography
@@ -137,13 +183,23 @@ export default function AdmissionDetails() {
 
       <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
         <TextField
-          placeholder="Search by Student Name, Phone number"
+          placeholder="Search by Student Name or Phone number"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <SearchIcon />
               </InputAdornment>
             ),
+          }}
+          onChange={(e) => {
+            const searchValue = e.target.value.toLowerCase();
+            setTableDataState(
+              tableData.filter(
+                (row) =>
+                  row.studentName.toLowerCase().includes(searchValue) ||
+                  row.phoneNumber.includes(searchValue)
+              )
+            );
           }}
           sx={{
             flex: 1,
@@ -153,46 +209,160 @@ export default function AdmissionDetails() {
             },
           }}
         />
-        <Select defaultValue="Class Enquiry" sx={{ width: 200 }}>
-          <MenuItem value="Class Enquiry" sx={{ color: "#615b71" }}>
-            Class Enquiry
+        <Select
+          value=""
+          sx={{ width: 200 }}
+          onChange={(e) => {
+            const selectedValue = e.target.value;
+            if (selectedValue === "") {
+              setTableDataState(tableData); // Show all entries by default
+            } else {
+              setTableDataState(
+                tableData.filter((row) => row.createdBy === selectedValue)
+              );
+            }
+          }}
+          displayEmpty // Ensures placeholder is shown when no value is selected
+          renderValue={(selected) =>
+            selected ? (
+              selected
+            ) : (
+              <span style={{ color: "#958DA8", }}>
+                Created By
+              </span>
+            )
+          } // Style the placeholder text
+        >
+          <MenuItem value="Admission form" sx={{ color: "#615b71" }}>
+            Admission form
+          </MenuItem>
+          <MenuItem value="Online Enquiry" sx={{ color: "#615b71" }}>
+            Online Enquiry
           </MenuItem>
         </Select>
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker sx={{ width: 200 }} />
-          <DatePicker sx={{ width: 200 }} />
-        </LocalizationProvider>
+  {/* Date Picker for "Date" */}
+  <DatePicker
+    label="Date"
+    onChange={(newValue) => {
+      if (newValue) {
+        const selectedDate = newValue.format("D MMM, YYYY");
+        setTableDataState(
+          tableData.filter((row) => row.dateTime.includes(selectedDate))
+        );
+      } else {
+        setTableDataState(tableData); // Reset if no date selected
+      }
+    }}
+    sx={{ width: 200 }}
+  />
+
+  {/* Date Picker for "Follow Up Date" */}
+  <DatePicker
+    label="Follow Up Date"
+    onChange={(newValue) => {
+      if (newValue) {
+        const selectedDate = newValue.format("D MMM, YYYY");
+        setTableDataState(
+          tableData.filter((row) => row.followUp.includes(selectedDate))
+        );
+      } else {
+        setTableDataState(tableData); // Reset if no date selected
+      }
+    }}
+    sx={{ width: 200 }}
+  />
+</LocalizationProvider>
+
       </Box>
 
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-          <TableRow sx={{ backgroundColor: "#1FB892" }}>
+            <TableRow sx={{ backgroundColor: "#1FB892" }}>
               <TableCell padding="checkbox" sx={{ padding: "1px" }}>
-                <Checkbox sx={{color: "white", ml:0.5}}/>
+                <Checkbox sx={{ color: "white", ml: 0.5 }} />
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center' }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Student Name
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center', padding: "2px" }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  padding: "2px",
+                }}
+              >
                 Class
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center' }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Parent Name
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center' }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Phone number
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center' }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Date & Time
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center' }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Follow up
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center' }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Created by
               </TableCell>
-              <TableCell sx={{ fontSize: "17px", color: "white", fontWeight: "bold", textAlign: 'center' }}>
+              <TableCell
+                sx={{
+                  fontSize: "17px",
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Status
               </TableCell>
             </TableRow>
@@ -203,37 +373,51 @@ export default function AdmissionDetails() {
                 <TableCell padding="checkbox">
                   <Checkbox />
                 </TableCell>
-                <TableCell 
-                  sx={{ 
-                    fontSize: "16px", 
-                    cursor: 'pointer',
-                    '&:hover': {
-                      color: '#1976d2',
-                      textDecoration: 'underline'
-                    }
+                <TableCell
+                  sx={{
+                    fontSize: "16px",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#1976d2",
+                      textDecoration: "underline",
+                    },
                   }}
                   onClick={() => setSelectedStudent(row)}
                 >
                   {row.studentName}
                 </TableCell>
-                <TableCell sx={{ fontSize: "16px" }}>{row.class}</TableCell>
-                <TableCell sx={{ fontSize: "16px" }}>{row.parentName}</TableCell>
-                <TableCell sx={{ fontSize: "16px" }}>{row.phoneNumber}</TableCell>
-                <TableCell sx={{ fontSize: "16px" }}>{row.dateTime}</TableCell>
-                <TableCell sx={{ fontSize: "16px" }}>{row.followUp}</TableCell>
-                <TableCell sx={{ fontSize: "16px" }}>{row.createdBy}</TableCell>
+                <TableCell sx={{ fontSize: "16px", textAlign: "center" }}>
+                  {row.class}
+                </TableCell>
+                <TableCell sx={{ fontSize: "16px", textAlign: "center" }}>
+                  {row.parentName}
+                </TableCell>
+                <TableCell sx={{ fontSize: "16px", textAlign: "center" }}>
+                  {row.phoneNumber}
+                </TableCell>
+                <TableCell sx={{ fontSize: "16px", textAlign: "center" }}>
+                  {row.dateTime}
+                </TableCell>
+                <TableCell sx={{ fontSize: "16px", textAlign: "center" }}>
+                  {row.followUp}
+                </TableCell>
+                <TableCell sx={{ fontSize: "16px", textAlign: "center" }}>
+                  {row.createdBy}
+                </TableCell>
                 <TableCell>
                   <Select
                     value={row.status}
                     size="medium"
                     onChange={(e) => handleStatusChange(row.id, e.target.value)}
                     sx={{
-                      width: '140px', 
-                      height: '30px',
-                      fontSize: '13px',
+                      width: "140px",
+                      height: "30px",
+                      fontSize: "13px",
                       "& .MuiSelect-select": {
                         py: 0.5,
-                        bgcolor: row.status === "Follow up" ? "#fff" : "#f5f5f5",
+                        bgcolor:
+                          row.status === "Follow up" ? "#fff" : "#f5f5f5",
                       },
                     }}
                   >

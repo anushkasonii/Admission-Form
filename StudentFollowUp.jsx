@@ -142,7 +142,7 @@ export default function StudentFollowUp({ student, onBack }) {
                     textAlign: 'center'
                   }}
                 >
-                  By
+                  Follow up By
                 </TableCell>
                 <TableCell 
                   sx={{ 
