@@ -38,19 +38,26 @@ export default function StudentFollowUp({ student, onBack }) {
     },
   ]);
 
+  
+  
+
+  // Define handleAddFollowUp function first
+  const handleAddFollowUp = (newFollowUp) => {
+    setFollowUpData((prevData) => [newFollowUp, ...prevData]);
+    setShowFollowUpForm(false); // Close the dialog
+  };
+
+  // Conditional rendering for the AddFollowUpForm
   if (showFollowUpForm) {
     return (
       <AddFollowUpForm
         student={student}
         onClose={() => setShowFollowUpForm(false)}
+        onSave={handleAddFollowUp} // Correctly pass the function here
       />
     );
   }
-  const handleAddFollowUp = (newFollowUp) => {
-    setFollowUpData((prevData) => [newFollowUp, ...prevData]);
-    setShowFollowUpForm(false);
-  };
-  
+
   const cellStyle = {
     "&:last-child": {
       borderRight: "none",
@@ -76,10 +83,10 @@ export default function StudentFollowUp({ student, onBack }) {
             color: "#5F5874",
           }}
         >
-          <IconButton onClick={onBack} sx={{ color: "#79757f" }}>
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography
+        <IconButton onClick={onBack} sx={{ color: "#79757f" }}>
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography
             variant="h6"
             sx={{ fontWeight: "bold", fontSize: "22px", color: "#64558f" }}
           >
@@ -180,17 +187,17 @@ export default function StudentFollowUp({ student, onBack }) {
             },
           }}
         >
-          Next Follow Up
+          Add Follow Up
         </Button>
       </Box>
-      {/* Follow Up Section */}
+
       <Box sx={{ mb: 4, mt: 2 }}>
-        {/* Table Section */}
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell
+      {/* Follow-Up Table */}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+            <TableCell
                   sx={{
                     ...cellStyle,
                     backgroundColor: "#1FB892",
@@ -226,12 +233,12 @@ export default function StudentFollowUp({ student, onBack }) {
                 >
                   Next Follow Up Date
                 </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {followUpData.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {followUpData.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell
                     sx={{
                       ...cellStyle,
                       fontSize: "15px",
@@ -272,19 +279,21 @@ export default function StudentFollowUp({ student, onBack }) {
                   >
                     {row.nextFollowUpDate}
                   </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        {showFollowUpForm && (
-          <AddFollowUpForm
-            student={student}
-            onClose={() => setShowFollowUpForm(false)}
-            onSave={handleAddFollowUp} // Pass the function here
-          />
-        )}
-      </Box>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Add Follow-Up Dialog */}
+      {showFollowUpForm && (
+        <AddFollowUpForm
+          student={student}
+          onClose={() => setShowFollowUpForm(false)}
+          onSave={handleAddFollowUp}
+        />
+      )}
+    </Box>
     </Box>
   );
 }

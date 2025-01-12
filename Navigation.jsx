@@ -3,8 +3,8 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 export default function Navigation() {
   const location = useLocation();
-  const navigate = useNavigate(); // React Router's hook to programmatically navigate
-  const showCreateEnquiry = location.pathname === "/"; // Show button only on Admission Details
+  const navigate = useNavigate(); 
+  const showCreateEnquiry = location.pathname === "/"; 
 
   // List of paths where headers should be hidden
   const hideTabsPaths = ["/form-preview", "/qr-code"];

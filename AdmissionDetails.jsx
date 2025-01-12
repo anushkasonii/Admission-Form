@@ -18,7 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StudentFollowUp from "./StudentFollowUp";
 
 const tableData = [
@@ -72,61 +72,62 @@ export default function AdmissionDetails() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [tableDataState, setTableDataState] = useState(tableData);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [stats, setStats] = useState([]);
 
-  const stats = [
-    {
-      label: "Total Enquiries",
-      value: tableData.length.toString(),
-    },
-    {
-      label: "School Toured",
-      value: tableData
-        .filter((item) => item.status === "School Toured")
-        .length.toString(),
-    },
-    {
-      label: "Follow up",
-      value: tableData
-        .filter((item) => item.status === "Follow up")
-        .length.toString(),
-    },
-    {
-      label: "Joined",
-      value: tableData
-        .filter((item) => item.status === "Joined")
-        .length.toString(),
-    },
-    {
-      label: "Dropped",
-      value: tableData
-        .filter((item) => item.status === "Dropped")
-        .length.toString(),
-    },
-  ];
+  // Function to calculate stats dynamically
+  const calculateStats = () => {
+    const total = tableDataState.length;
+    const schoolToured = tableDataState.filter(
+      (item) => item.status === "School Toured"
+    ).length;
+    const followUp = tableDataState.filter(
+      (item) => item.status === "Follow up"
+    ).length;
+    const joined = tableDataState.filter(
+      (item) => item.status === "Joined"
+    ).length;
+    const dropped = tableDataState.filter(
+      (item) => item.status === "Dropped"
+    ).length;
+
+    setStats([
+      { label: "Total Enquiries", value: total },
+      { label: "School Toured", value: schoolToured },
+      { label: "Follow up", value: followUp },
+      { label: "Joined", value: joined },
+      { label: "Dropped", value: dropped },
+    ]);
+  };
+
+  // Recalculate stats when table data changes
+  useEffect(() => {
+    calculateStats();
+  }, [tableDataState]);
 
   const handleFilterClick = (label) => {
-    if (label === "Total Enquiries") {
-      setSelectedFilters([]);
-      setTableDataState(tableData);
-    } else {
-      setSelectedFilters((prev) => {
-        const newFilters = prev.includes(label)
-          ? prev.filter((f) => f !== label)
-          : [...prev, label];
+  if (label === "Total Enquiries") {
+    // Reset filters and show all data
+    setSelectedFilters([]);
+    setTableDataState(tableData); // Ensure all data is displayed
+  } else {
+    setSelectedFilters((prev) => {
+      const newFilters = prev.includes(label)
+        ? prev.filter((f) => f !== label) // Remove filter if already selected
+        : [...prev, label]; // Add filter if not selected
 
-        if (newFilters.length === 0) {
-          setTableDataState(tableData);
-          return [];
-        }
+      // Apply filters to the table data
+      const filteredData =
+        newFilters.length === 0
+          ? tableData // Reset to show all data if no filters
+          : tableData.filter((item) => newFilters.includes(item.status));
 
-        const filtered = tableData.filter((item) =>
-          newFilters.includes(item.status)
-        );
-        setTableDataState(filtered);
-        return newFilters;
-      });
-    }
-  };
+      setTableDataState(filteredData);
+      return newFilters;
+    });
+  }
+};
+
+  
 
   const handleStatusChange = (id, newStatus) => {
     setTableDataState((prevData) =>
@@ -215,23 +216,21 @@ export default function AdmissionDetails() {
           onChange={(e) => {
             const selectedValue = e.target.value;
             if (selectedValue === "") {
-              setTableDataState(tableData); // Show all entries by default
+              setTableDataState(tableData);
             } else {
               setTableDataState(
                 tableData.filter((row) => row.createdBy === selectedValue)
               );
             }
           }}
-          displayEmpty // Ensures placeholder is shown when no value is selected
+          displayEmpty
           renderValue={(selected) =>
             selected ? (
               selected
             ) : (
-              <span style={{ color: "#958DA8", }}>
-                Created By
-              </span>
+              <span style={{ color: "#958DA8" }}>Created By</span>
             )
-          } // Style the placeholder text
+          }
         >
           <MenuItem value="Admission form" sx={{ color: "#615b71" }}>
             Admission form
@@ -242,39 +241,35 @@ export default function AdmissionDetails() {
         </Select>
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-  {/* Date Picker for "Date" */}
-  <DatePicker
-    label="Date"
-    onChange={(newValue) => {
-      if (newValue) {
-        const selectedDate = newValue.format("D MMM, YYYY");
-        setTableDataState(
-          tableData.filter((row) => row.dateTime.includes(selectedDate))
-        );
-      } else {
-        setTableDataState(tableData); // Reset if no date selected
-      }
-    }}
-    sx={{ width: 200 }}
-  />
-
-  {/* Date Picker for "Follow Up Date" */}
-  <DatePicker
-    label="Follow Up Date"
-    onChange={(newValue) => {
-      if (newValue) {
-        const selectedDate = newValue.format("D MMM, YYYY");
-        setTableDataState(
-          tableData.filter((row) => row.followUp.includes(selectedDate))
-        );
-      } else {
-        setTableDataState(tableData); // Reset if no date selected
-      }
-    }}
-    sx={{ width: 200 }}
-  />
-</LocalizationProvider>
-
+          <DatePicker
+            label="Date"
+            onChange={(newValue) => {
+              if (newValue) {
+                const selectedDate = newValue.format("D MMM, YYYY");
+                setTableDataState(
+                  tableData.filter((row) => row.dateTime.includes(selectedDate))
+                );
+              } else {
+                setTableDataState(tableData);
+              }
+            }}
+            sx={{ width: 200 }}
+          />
+          <DatePicker
+            label="Follow Up Date"
+            onChange={(newValue) => {
+              if (newValue) {
+                const selectedDate = newValue.format("D MMM, YYYY");
+                setTableDataState(
+                  tableData.filter((row) => row.followUp.includes(selectedDate))
+                );
+              } else {
+                setTableDataState(tableData);
+              }
+            }}
+            sx={{ width: 200 }}
+          />
+        </LocalizationProvider>
       </Box>
 
       <TableContainer component={Paper}>

@@ -98,6 +98,16 @@ export default function AdmissionForm() {
           <Checkbox checked={true} color="primary" />
           <TextField
             fullWidth
+            label="Date Of Birth"
+            variant="outlined"
+            disabled
+          />
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <Checkbox checked={true} color="primary" />
+          <TextField
+            fullWidth
             label="Parent Name"
             variant="outlined"
             disabled
@@ -132,16 +142,16 @@ export default function AdmissionForm() {
           </Box>
         ))}
 
-        {!isSubmitted && (
-          <Button
-            startIcon={<AddCircleIcon />}
-            variant="outlined"
-            sx={{ width: 'fit-content' }}
-            onClick={handleAddField}
-          >
-            Add Field
-          </Button>
-        )}
+        {/* {!isSubmitted && (
+          // <Button
+          //   startIcon={<AddCircleIcon />}
+          //   variant="outlined"
+          //   sx={{ width: 'fit-content' }}
+          //   onClick={handleAddField}
+          // >
+          //   Add Field
+          // </Button>
+        )} */}
  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 4 }}>
         {!isSubmitted ? (
           <Button

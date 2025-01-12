@@ -1,7 +1,11 @@
 import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Paper } from '@mui/material';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers'; // Import DatePicker and LocalizationProvider
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'; // Adapter for DateFns
+
 
 export default function FormPreview() {
   return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
     <Box
       sx={{
         display: 'flex',
@@ -64,6 +68,16 @@ export default function FormPreview() {
             <TextField fullWidth label="Phone Number" variant="outlined" />
           </Box>
 
+            {/* Date of Birth */}
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+              <DatePicker
+                label="Date of Birth"
+                inputFormat="dd/MM/yyyy"
+                renderInput={(params) => <TextField fullWidth {...params} />}
+              />
+            </Box>
+
+
           {/* Father Name */}
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             {/* <Checkbox  color="primary" /> */}
@@ -106,5 +120,6 @@ export default function FormPreview() {
         </Box>
       </Box>
     </Box>
+    </LocalizationProvider>
   );
 }
